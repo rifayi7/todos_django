@@ -1,0 +1,48 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+        <div class="card" style="border-radius: .75rem; background-color: #eff1f2;">
+          <div class="card-body py-4 px-4 px-md-5">
+            <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+              <i class="fas fa-check-square me-1"></i>
+              <u>Edit Todo</u>
+            </p>
+
+            
+            <form method="POST">
+              {% csrf_token %}
+              <div class="pb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex flex-row align-items-center">
+                      
+                      <input type="text" name="text" class="form-control form-control-lg" id="exampleFormControlInput1"
+                             value="{{ todo.text }}" required>
+                      <div>
+                        
+                        <button type="submit" class="btn btn-primary ms-2">Update</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <hr class="my-4">
+
+            
+            <div class="text-center mt-3">
+              <a href="{% url 'todo_list' %}" class="btn btn-secondary">Back</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

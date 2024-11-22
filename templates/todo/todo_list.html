@@ -1,0 +1,116 @@
+{% extends "includes/base.html" %}
+{% load static %}
+{% block content %}
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+        <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+          <div class="card-body py-4 px-4 px-md-5">
+            <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+              <i class="fas fa-check-square me-1"></i>
+              <u>My Todo-s</u>
+            </p>
+
+            <!-- adding new todo here -->
+            <form method="POST" action="{% url 'add_todo' %}">
+              {% csrf_token %}
+              <div class="pb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex flex-row align-items-center">
+                      <input type="text" name="text" class="form-control form-control-lg" id="exampleFormControlInput1"
+                             placeholder="Add new Todo..." required>
+                      <div>
+                        <button type="submit" class="btn btn-primary ms-2">Add</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <hr class="my-4">
+
+            
+            <form method="POST" action="{% url 'todo_list' %}">
+                {% csrf_token %}
+              
+                
+                <div class="container">
+                  <div class="row">
+                    <!-- showing my not completed todos -->
+                    <div class="col-md-6">
+                      <ul class="list-group" id="todo-list-not-completed">
+                        {% for todo in todos %}
+                          {% if not todo.completed %}
+                            <li class="list-group-item d-flex align-items-center py-2">
+                              <div class="form-check">
+                                <input type="checkbox" class="todo-checkbox" name="selected_todos" value="{{ todo.id }}">
+                              </div>
+                              <p class="lead fw-normal mb-0 flex-grow-1">
+                                {{ todo.text }}
+                              </p>
+                              <a href="{% url 'edit_todo' todo.id %}" class="btn btn-warning btn-sm ml-3">
+                                <i class="fas fa-edit"></i> Edit
+                              </a>
+                              
+                              <form method="POST" action="{% url 'complete_todo' todo.id %}" class="d-inline-block">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm ml-3">
+                                  <img src="{% static 'icons/complete.svg' %}" alt="icon">
+
+                                </button>
+                              </form>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+
+                    
+                    <div class="col-md-1 d-flex justify-content-center align-items-center">
+                      <div class="vertical-divider"></div>
+                    </div>
+              
+                    <!-- here showing my completed todos only -->
+                    <div class="col-md-5">
+                      <ul class="list-group" id="todo-list-completed">
+                        {% for todo in todos %}
+                          {% if todo.completed %}
+                            <li class="list-group-item d-flex align-items-center py-2">
+                              <div class="form-check">
+                                <input type="checkbox" class="todo-checkbox" name="selected_todos" value="{{ todo.id }}">
+                              </div>
+                              <p class="lead fw-normal mb-0 text-decoration-line-through">
+                                {{ todo.text }}
+                              </p>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                  
+
+                  <!-- delete button-->
+                  <div id="action-buttons" class="d-none mt-3">
+                    
+                    <button type="submit" name="action" value="delete" class="btn btn-danger me-2">
+                      <img src="{% static 'icons/delete.svg' %}" alt="icon">
+
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{% static 'js/select.js' %}"></script>
+
+{% endblock %}
